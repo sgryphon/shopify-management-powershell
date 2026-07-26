@@ -1,79 +1,79 @@
 zone,method,greaterThanKg,lessThanKg,rateAud
 Domestic,Wholesale Insured Express,0,0.251,9.24
-Domestic,Wholesale Insured Express,0.251,0.501,12.01
-Domestic,Wholesale Insured Express,0.501,1.001,18.73
-Domestic,Wholesale Insured Express,1.001,1.501,25.41
-Domestic,Wholesale Insured Express,1.501,2.001,28.91
-Domestic,Wholesale Insured Express,2.001,2.501,32.41
-Domestic,Wholesale Insured Express,2.501,3.001,35.91
-Domestic,Wholesale Insured Express,3.001,3.501,45.01
-Domestic,Wholesale Insured Express,3.501,4.001,48.51
-Domestic,Wholesale Insured Express,4.001,4.501,52.01
-Domestic,Wholesale Insured Express,4.501,5.001,55.51
-Zone 1: New Zealand,International Insured Express (DAP),0,0.251,19.98
-Zone 1: New Zealand,International Insured Express (DAP),0.251,0.501,24.39
-Zone 1: New Zealand,International Insured Express (DAP),0.501,1.001,33.24
-Zone 1: New Zealand,International Insured Express (DAP),1.001,1.501,42.09
-Zone 1: New Zealand,International Insured Express (DAP),1.501,2.001,50.94
-Zone 1: New Zealand,International Insured Express (DAP),2.001,2.501,58.50
-Zone 1: New Zealand,International Insured Express (DAP),2.501,3.001,66.06
-Zone 1: New Zealand,International Insured Express (DAP),3.001,3.501,73.62
-Zone 1: New Zealand,International Insured Express (DAP),3.501,4.001,81.18
-Zone 1: New Zealand,International Insured Express (DAP),4.001,4.501,88.74
-Zone 1: New Zealand,International Insured Express (DAP),4.501,5.001,96.30
-Zone 2: Asia Pacific,International Insured Express (DAP),0,0.251,22.17
-Zone 2: Asia Pacific,International Insured Express (DAP),0.251,0.501,28.20
-Zone 2: Asia Pacific,International Insured Express (DAP),0.501,1.001,40.29
-Zone 2: Asia Pacific,International Insured Express (DAP),1.001,1.501,52.38
-Zone 2: Asia Pacific,International Insured Express (DAP),1.501,2.001,64.47
-Zone 2: Asia Pacific,International Insured Express (DAP),2.001,2.501,73.20
-Zone 2: Asia Pacific,International Insured Express (DAP),2.501,3.001,81.93
-Zone 2: Asia Pacific,International Insured Express (DAP),3.001,3.501,90.66
-Zone 2: Asia Pacific,International Insured Express (DAP),3.501,4.001,99.39
-Zone 2: Asia Pacific,International Insured Express (DAP),4.001,4.501,108.12
-Zone 2: Asia Pacific,International Insured Express (DAP),4.501,5.001,116.85
-Zone 3a: Canada,International Insured Express (DAP),0,0.251,23.58
-Zone 3a: Canada,International Insured Express (DAP),0.251,0.501,30.00
-Zone 3a: Canada,International Insured Express (DAP),0.501,1.001,42.72
-Zone 3a: Canada,International Insured Express (DAP),1.001,1.501,55.53
-Zone 3a: Canada,International Insured Express (DAP),1.501,2.001,68.31
-Zone 3a: Canada,International Insured Express (DAP),2.001,2.501,77.76
-Zone 3a: Canada,International Insured Express (DAP),2.501,3.001,87.21
-Zone 3a: Canada,International Insured Express (DAP),3.001,3.501,96.66
-Zone 3a: Canada,International Insured Express (DAP),3.501,4.001,106.11
-Zone 3a: Canada,International Insured Express (DAP),4.001,4.501,115.56
-Zone 3a: Canada,International Insured Express (DAP),4.501,5.001,125.01
-Zone 3b: US,International Insured Express (DAP),0,0.251,26.58
-Zone 3b: US,International Insured Express (DAP),0.251,0.501,33.00
-Zone 3b: US,International Insured Express (DAP),0.501,1.001,45.72
-Zone 3b: US,International Insured Express (DAP),1.001,1.501,58.53
-Zone 3b: US,International Insured Express (DAP),1.501,2.001,71.31
-Zone 3b: US,International Insured Express (DAP),2.001,2.501,83.10
-Zone 3b: US,International Insured Express (DAP),2.501,3.001,94.89
-Zone 3b: US,International Insured Express (DAP),3.001,3.501,106.68
-Zone 3b: US,International Insured Express (DAP),3.501,4.001,118.47
-Zone 3b: US,International Insured Express (DAP),4.001,4.501,130.26
-Zone 3b: US,International Insured Express (DAP),4.501,5.001,142.05
-Zone 4: UK & Europe,International Insured Express (DAP),0,0.251,26.70
-Zone 4: UK & Europe,International Insured Express (DAP),0.251,0.501,33.24
-Zone 4: UK & Europe,International Insured Express (DAP),0.501,1.001,46.38
-Zone 4: UK & Europe,International Insured Express (DAP),1.001,1.501,59.49
-Zone 4: UK & Europe,International Insured Express (DAP),1.501,2.001,72.60
-Zone 4: UK & Europe,International Insured Express (DAP),2.001,2.501,82.59
-Zone 4: UK & Europe,International Insured Express (DAP),2.501,3.001,92.58
-Zone 4: UK & Europe,International Insured Express (DAP),3.001,3.501,102.57
-Zone 4: UK & Europe,International Insured Express (DAP),3.501,4.001,112.56
-Zone 4: UK & Europe,International Insured Express (DAP),4.001,4.501,122.55
-Zone 4: UK & Europe,International Insured Express (DAP),4.501,5.001,132.54
+Domestic,Wholesale Insured Express,0.251,0.501,12.39
+Domestic,Wholesale Insured Express,0.501,1.001,19.25
+Domestic,Wholesale Insured Express,1.001,1.501,26.08
+Domestic,Wholesale Insured Express,1.501,2.001,29.58
+Domestic,Wholesale Insured Express,2.001,2.501,33.08
+Domestic,Wholesale Insured Express,2.501,3.001,36.58
+Domestic,Wholesale Insured Express,3.001,3.501,45.82
+Domestic,Wholesale Insured Express,3.501,4.001,49.32
+Domestic,Wholesale Insured Express,4.001,4.501,52.82
+Domestic,Wholesale Insured Express,4.501,5.001,56.32
+Zone 1: New Zealand,International Insured Express (DAP),0,0.251,20.94
+Zone 1: New Zealand,International Insured Express (DAP),0.251,0.501,25.56
+Zone 1: New Zealand,International Insured Express (DAP),0.501,1.001,34.80
+Zone 1: New Zealand,International Insured Express (DAP),1.001,1.501,44.04
+Zone 1: New Zealand,International Insured Express (DAP),1.501,2.001,53.28
+Zone 1: New Zealand,International Insured Express (DAP),2.001,2.501,61.11
+Zone 1: New Zealand,International Insured Express (DAP),2.501,3.001,68.94
+Zone 1: New Zealand,International Insured Express (DAP),3.001,3.501,76.77
+Zone 1: New Zealand,International Insured Express (DAP),3.501,4.001,84.60
+Zone 1: New Zealand,International Insured Express (DAP),4.001,4.501,92.43
+Zone 1: New Zealand,International Insured Express (DAP),4.501,5.001,100.26
+Zone 2: Asia Pacific,International Insured Express (DAP),0,0.251,22.56
+Zone 2: Asia Pacific,International Insured Express (DAP),0.251,0.501,28.71
+Zone 2: Asia Pacific,International Insured Express (DAP),0.501,1.001,41.04
+Zone 2: Asia Pacific,International Insured Express (DAP),1.001,1.501,53.37
+Zone 2: Asia Pacific,International Insured Express (DAP),1.501,2.001,65.70
+Zone 2: Asia Pacific,International Insured Express (DAP),2.001,2.501,74.55
+Zone 2: Asia Pacific,International Insured Express (DAP),2.501,3.001,83.40
+Zone 2: Asia Pacific,International Insured Express (DAP),3.001,3.501,92.25
+Zone 2: Asia Pacific,International Insured Express (DAP),3.501,4.001,101.10
+Zone 2: Asia Pacific,International Insured Express (DAP),4.001,4.501,109.95
+Zone 2: Asia Pacific,International Insured Express (DAP),4.501,5.001,118.80
+Zone 3a: Canada,International Insured Express (DAP),0,0.251,24.03
+Zone 3a: Canada,International Insured Express (DAP),0.251,0.501,30.57
+Zone 3a: Canada,International Insured Express (DAP),0.501,1.001,43.56
+Zone 3a: Canada,International Insured Express (DAP),1.001,1.501,56.64
+Zone 3a: Canada,International Insured Express (DAP),1.501,2.001,69.66
+Zone 3a: Canada,International Insured Express (DAP),2.001,2.501,79.26
+Zone 3a: Canada,International Insured Express (DAP),2.501,3.001,88.86
+Zone 3a: Canada,International Insured Express (DAP),3.001,3.501,98.46
+Zone 3a: Canada,International Insured Express (DAP),3.501,4.001,108.06
+Zone 3a: Canada,International Insured Express (DAP),4.001,4.501,117.66
+Zone 3a: Canada,International Insured Express (DAP),4.501,5.001,127.26
+Zone 3b: US,International Insured Express (DDP),0,0.251,27.03
+Zone 3b: US,International Insured Express (DDP),0.251,0.501,33.57
+Zone 3b: US,International Insured Express (DDP),0.501,1.001,46.56
+Zone 3b: US,International Insured Express (DDP),1.001,1.501,59.64
+Zone 3b: US,International Insured Express (DDP),1.501,2.001,72.66
+Zone 3b: US,International Insured Express (DDP),2.001,2.501,82.26
+Zone 3b: US,International Insured Express (DDP),2.501,3.001,91.86
+Zone 3b: US,International Insured Express (DDP),3.001,3.501,101.46
+Zone 3b: US,International Insured Express (DDP),3.501,4.001,111.06
+Zone 3b: US,International Insured Express (DDP),4.001,4.501,120.66
+Zone 3b: US,International Insured Express (DDP),4.501,5.001,130.26
+Zone 4: UK & Europe,International Insured Express (DAP),0,0.251,27.24
+Zone 4: UK & Europe,International Insured Express (DAP),0.251,0.501,33.93
+Zone 4: UK & Europe,International Insured Express (DAP),0.501,1.001,47.34
+Zone 4: UK & Europe,International Insured Express (DAP),1.001,1.501,60.72
+Zone 4: UK & Europe,International Insured Express (DAP),1.501,2.001,74.10
+Zone 4: UK & Europe,International Insured Express (DAP),2.001,2.501,84.27
+Zone 4: UK & Europe,International Insured Express (DAP),2.501,3.001,94.44
+Zone 4: UK & Europe,International Insured Express (DAP),3.001,3.501,104.61
+Zone 4: UK & Europe,International Insured Express (DAP),3.501,4.001,114.78
+Zone 4: UK & Europe,International Insured Express (DAP),4.001,4.501,124.95
+Zone 4: UK & Europe,International Insured Express (DAP),4.501,5.001,135.12
 Zone 4: UK & Europe,"Own shipping, purchaser will arrange (EXW)",0,0,0.00
-Zone 5: Rest of the World,International Insured Express (DAP),0,0.251,30.21
-Zone 5: Rest of the World,International Insured Express (DAP),0.251,0.501,38.04
-Zone 5: Rest of the World,International Insured Express (DAP),0.501,1.001,53.70
-Zone 5: Rest of the World,International Insured Express (DAP),1.001,1.501,69.33
-Zone 5: Rest of the World,International Insured Express (DAP),1.501,2.001,84.99
-Zone 5: Rest of the World,International Insured Express (DAP),2.001,2.501,96.78
-Zone 5: Rest of the World,International Insured Express (DAP),2.501,3.001,108.57
-Zone 5: Rest of the World,International Insured Express (DAP),3.001,3.501,120.36
-Zone 5: Rest of the World,International Insured Express (DAP),3.501,4.001,132.15
-Zone 5: Rest of the World,International Insured Express (DAP),4.001,4.501,143.94
-Zone 5: Rest of the World,International Insured Express (DAP),4.501,5.001,155.73
+Zone 5: Rest of the World,International Insured Express (DAP),0,0.251,30.87
+Zone 5: Rest of the World,International Insured Express (DAP),0.251,0.501,38.88
+Zone 5: Rest of the World,International Insured Express (DAP),0.501,1.001,54.90
+Zone 5: Rest of the World,International Insured Express (DAP),1.001,1.501,70.89
+Zone 5: Rest of the World,International Insured Express (DAP),1.501,2.001,86.88
+Zone 5: Rest of the World,International Insured Express (DAP),2.001,2.501,98.91
+Zone 5: Rest of the World,International Insured Express (DAP),2.501,3.001,110.94
+Zone 5: Rest of the World,International Insured Express (DAP),3.001,3.501,122.97
+Zone 5: Rest of the World,International Insured Express (DAP),3.501,4.001,135.00
+Zone 5: Rest of the World,International Insured Express (DAP),4.001,4.501,147.03
+Zone 5: Rest of the World,International Insured Express (DAP),4.501,5.001,159.06

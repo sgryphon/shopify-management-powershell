@@ -2,26 +2,9 @@
 
 Australia Post zones and rate data for importing to Shopify.
 
-See "New rate update process" at the end of the document for update instructions.
+See the top level instructions for requirements and how to access the Shopify API.
 
-## Requirements
-
-This project contains PowerShell scripts that can be used to upload shipping rates to Shopify via the API.
-
-You will need to have PowerShell Core (crossplatform) installed to run the scripts.
-
-## Configure a Private App to get access to the API
-
-In the Shopfiy admin, go to Apps > Manage private apps.
-
-You will need to enable private apps, and then create a new app (call it something like "AusPost Rates" or "Data Manager", or whatever name makes sense to you). It will need Read and write permission to Shipping, as well as other functions you want to use, e.g. to use scripts to add products to shipping, you need Read access to Products.
-
-Record the API parameters in variables, which will be used in other scripts. For graph queries you will need the 'Password' value (you don't need the API key for Shared Secret).
-
-```powershell
-$password = '<Password>'
-$shopName = '<shop name>'
-```
+See [New rate update process](New-Rate-Update-Process.md) for step-by-step update instructions.
 
 ## New rate update process
 
@@ -29,9 +12,9 @@ The sections below provide a lot of general scripts explaining different aspects
 
 If you want to just update rates, see [New-Rate-Update-Process.md](New-Rate-Update-Process.md) for a step-by-step process.
 
-## Accessing the GraphQL API
+## Get existing shipping profile information
 
-First set up the base URL and headers, using the variables above.
+You will need to get the delivery profile ID's and location group ID's to use in other queries.
 
 ```powershell
 $uri = "https://$shopName.myshopify.com/admin/api/2021-01/graphql.json"
@@ -39,34 +22,7 @@ $headers = @{
   'Content-Type' = 'application/graphql';
   'X-Shopify-Access-Token' = $password
 }
-```
 
-A simple query can be used to check the existing shipping profiles.
-
-```powershell
-$body = '{
-  deliveryProfiles(first:10) {
-    edges {
-      node {
-        id
-        name
-        default
-      }
-    }
-  }
-}'
-
-Invoke-RestMethod -Method Post -Uri $uri -Headers $headers -Body $body | ConvertTo-Json -Depth 5
-```
-
-You can also interactively test out queries in the Shopify API developer documentation site:
-https://shopify.dev/docs/admin-api/graphql/reference/shipping-and-fulfillment/deliveryprofile#samples
-
-## Get existing shipping profile information
-
-You will need to get the delivery profile ID's and location group ID's to use in other queries.
-
-```powershell
 $body = '{
   deliveryProfiles(first:10) {
     edges {

@@ -4,9 +4,9 @@ To bulk assign products to particular rates, e.g. if you want to filter a select
 
 See the top level instructions for requirements and how to access the Shopify API.
 
-## Accessing the GraphQL API
+## Get existing shipping profile information
 
-First set up the base URL and headers, using the variables above.
+You will need to get the delivery profile ID's and location group ID's to use in other queries.
 
 ```powershell
 $uri = "https://$shopName.myshopify.com/admin/api/2021-01/graphql.json"
@@ -14,34 +14,7 @@ $headers = @{
   'Content-Type' = 'application/graphql';
   'X-Shopify-Access-Token' = $password
 }
-```
 
-A simple query can be used to check the existing shipping profiles.
-
-```powershell
-$body = '{
-  deliveryProfiles(first:10) {
-    edges {
-      node {
-        id
-        name
-        default
-      }
-    }
-  }
-}'
-
-Invoke-RestMethod -Method Post -Uri $uri -Headers $headers -Body $body | ConvertTo-Json -Depth 5
-```
-
-You can also interactively test out queries in the Shopify API developer documentation site:
-https://shopify.dev/docs/admin-api/graphql/reference/shipping-and-fulfillment/deliveryprofile#samples
-
-## Get existing shipping profile information
-
-You will need to get the delivery profile ID's and location group ID's to use in other queries.
-
-```powershell
 $body = '{
   deliveryProfiles(first:10) {
     edges {

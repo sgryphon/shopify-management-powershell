@@ -298,6 +298,76 @@ $endCursor = $products.data.products.pageInfo.endCursor
 
 ## Update general attributes, e.g. age range
 
+Age range is stored as a metafield on the product, so create a query that includes the metafield:
+
+```powershell
+$getProductsQuery = 'query ($first: Int, $filter: String, $after: String) {
+  products(first: $first, query: $filter, after: $after) {
+    nodes {
+      id
+      handle
+      vendor
+      status
+      title
+      metafields(first: 10) {
+        nodes {
+          key
+          namespace
+          jsonValue
+          value
+        }
+      }
+      variants(first: 2) {
+        nodes {
+          id
+          title
+          sku
+          barcodes(first: 3) {
+            nodes {
+              type
+              value
+            }
+          }
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}'
+```
+
+We want to operate on one page at a time, so select a page of data:
+
+```powershell
+$endCursor = $null
+
+$getProductsData = @{
+  query = $getProductsQuery;
+  variables = @{
+    first = 5;
+    filter = "steampunk";
+    after = $endCursor;
+  }
+}
+$products = Invoke-RestMethod -Method Post -Uri $uri -Headers $jsonHeaders -Body (ConvertTo-Json -Depth 3 $getProductsData)
+$products.data.products.nodes | Measure-Object | Select Count
+$products.data.products.nodes[0].title
+$endCursor = $products.data.products.pageInfo.endCursor
+```
+
+Filter products in the batch that do not have age-group metafield:
+
+```powershell
+$productsWithoutAgeGroup = $products.data.products.nodes | Where-Object {
+    @($_.metafields.nodes | Where-Object {
+        $_.namespace -eq 'shopify' -and $_.key -eq 'age-group'
+    }).Count -eq 0
+}
+```
+
 ## Ideas
 
 - Set product classification attributes required by Zonos, e.g. set Age Range = Adult, so Zonos does flag them for child safety accreditation requirements.

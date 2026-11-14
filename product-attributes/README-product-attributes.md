@@ -6,7 +6,7 @@
 $password = '<Password>'
 $shopName = '<shop name>'
 
-$uri = "https://$shopName.myshopify.com/admin/api/2021-01/graphql.json"
+$uri = "https://$shopName.myshopify.com/admin/api/2026-10/graphql.json"
 $jsonHeaders = @{
   'Content-Type' = 'application/json';
   'X-Shopify-Access-Token' = $password
@@ -77,7 +77,224 @@ $activeProducts = $wholesaleProducts.data.products.edges.node | ? { $_.status -e
 $activeProducts | Measure-Object
 ```
 
+## Use Shopify GraphiQL App
+
+You can add the 'Shopify GraphiQL App' to your store, then open the App to test direct queries against your shop.
+
+Query is in GraphQL:
+
+```
+query ($first: Int, $filter: String) {
+  products(first: $first, query: $filter) {
+    nodes {
+      id
+      handle
+      vendor
+      status
+      title
+      metafields(first: 10) {
+        nodes {
+          key
+          namespace
+          jsonValue
+          value
+        }
+      }
+      variants(first: 2) {
+        nodes {
+          id
+          title
+          sku
+          barcodes(first: 3) {
+            nodes {
+              type
+              value
+            }
+          }
+          metafields(first: 5) {
+            nodes {
+              key
+              namespace
+              jsonValue
+              value
+            }
+          }
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+```
+
+Use the query argument in the products connection to filter by standard attributes or
+metafields. The syntax follows field:value or metafields.{namespace}.{key}:value.
+
+- Standard Filters: title, vendor, product_type, tag, handle, status, inventory_total.
+- Metafield Filters: metafields.custom.material:silk or metafields.custom.color:red.
+- Date/Range: created_at:>'2020-10-21' or inventory_total:>500.
+
+For more info see https://shopify.dev/docs/api/usage/search-syntax
+
+Parameters are provided in JSON, e.g. title starting with word:
+
+```json
+{
+  "first": 5,
+  "filter": "title:christmas"
+}
+```
+
+Handle search appears to be exact match, e.g. "handle:christmas-heels" only matches one product, but supports wildcards, e.g. "handle:christmas-heels\*" returns both retail and wholesale set.
+
+It's not clear how the filter applies, e.g. the following matches 'christmas-heels' as above, and 'christmas-heart-box-clicker', but for some reason also matches 'heart-of-christmas-earrings':
+
+```json
+{
+  "first": 5,
+  "filter": "handle:christmas-he*"
+}
+```
+
+SKU search is a starts-with, e.g. the following is just the wholesale product, but "sku:190015" returns both retail and wholesale.
+
+```json
+{
+  "first": 5,
+  "filter": "sku:190015-W6"
+}
+```
+
+## Query of relevant attributes
+
+```powershell
+$getProductsQuery = 'query ($first: Int, $filter: String) {
+  products(first: $first, query: $filter) {
+    nodes {
+      id
+      handle
+      vendor
+      status
+      title
+      metafields(first: 10) {
+        nodes {
+          key
+          namespace
+          jsonValue
+          value
+        }
+      }
+      variants(first: 2) {
+        nodes {
+          id
+          title
+          sku
+          barcodes(first: 3) {
+            nodes {
+              type
+              value
+            }
+          }
+          metafields(first: 10) {
+            nodes {
+              key
+              namespace
+              jsonValue
+              value
+            }
+          }
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}'
+
+$getProductsData = @{
+  query = $getProductsQuery;
+  variables = @{
+    first = 5;
+    filter = 'handle:orchid-whispers-necklace'
+  }
+}
+
+$products = Invoke-RestMethod -Method Post -Uri $uri -Headers $jsonHeaders -Body (ConvertTo-Json -Depth 3 $getProductsData)
+$products.data.products.nodes | Measure-Object
+$products.data.products.nodes[0] | ConvertTo-Json -Depth 10
+```
+
 ## Operate in batches
+
+```powershell
+$getProductsQuery = 'query ($first: Int, $filter: String, $after: String) {
+  products(first: $first, query: $filter, after: $after) {
+    nodes {
+      id
+      handle
+      vendor
+      status
+      title
+      variants(first: 1) {
+        nodes {
+          sku
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}'
+
+$getAllFilterProducts = @{
+  query = $getProductsQuery;
+  variables = @{
+    first = 200;
+    filter = "steampunk";
+  }
+}
+
+$allFilterProducts = Invoke-RestMethod -Method Post -Uri $uri -Headers $jsonHeaders -Body (ConvertTo-Json -Depth 3 $getAllFilterProducts)
+$allFilterProducts.data.products.nodes | Measure-Object -Count | Select Count
+$allFilterProducts.data.products.nodes[0].title
+```
+
+Use a filter that selects a small number of records, e.g. ~20
+
+Initialise a variable to hold the latest cursor:
+
+```powershell
+$endCursor = $null
+```
+
+The query with a small row limit, e.g. 5, show the page info, and store the ending cursor.
+Repeat the commands to get the next page until all results are returned.
+
+```powershell
+# Repeat from here
+$getProductsData = @{
+  query = $getProductsQuery;
+  variables = @{
+    first = 5;
+    filter = "steampunk";
+    after = $endCursor;
+  }
+}
+$products = Invoke-RestMethod -Method Post -Uri $uri -Headers $jsonHeaders -Body (ConvertTo-Json -Depth 3 $getProductsData)
+$products.data.products.nodes | Measure-Object | Select Count
+$products.data.products.nodes[0].title
+$products.data.products.pageInfo
+$endCursor = $products.data.products.pageInfo.endCursor
+
+# Repeat query from above until complete
+```
 
 ## Update general attributes, e.g. age range
 

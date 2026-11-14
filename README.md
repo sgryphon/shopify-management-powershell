@@ -1,20 +1,22 @@
-Shopify - AusPost Rates
-=======================
+# Shopify Management with PowerShell and GraphQL
 
-Australia Post zones and rate data for importing to Shopify.
+Use a Shopfiy Private App API via PowerShell for bulk management of your Shopify data.
 
-See "New rate update process" at the end of the document for update instructions.
+Note that directly modifying Shopify data is risky, and you could end up deleting data accidentally -- make sure you know what you are doing and have a backup, e.g. downloaded CSV files or using a third-party backup app.
 
-Requirements
-------------
+Examples are provided for the following operations:
+
+- Managing postage rates, with examples for setting up standard Aus Post rates. (Also consider using a third party app that can do this for your automatically, unless you have specific requirements). See [auspost-rates](auspost-rates\README-auspost-rates.md)
+- Bulk assigning Products to postage rates. See [product-assign-rates](product-assign-rates\README-assign-rates.md)
+- Bulk managing Product attributes, with a focus on various attributes needed top satisfy postage rules, e.g. as EU product identifiers, USA HS Codes, and validation attributes such as those reported by Zonos (the customs service used by Australia Post)
+
+## Requirements
 
 This project contains PowerShell scripts that can be used to upload shipping rates to Shopify via the API.
 
 You will need to have PowerShell Core (crossplatform) installed to run the scripts.
 
-
-Configure a Private App to get access to the API
-------------------------------------------------
+## Configure a Private App to get access to the API
 
 In the Shopfiy admin, go to Apps > Manage private apps.
 
@@ -27,21 +29,19 @@ $password = '<Password>'
 $shopName = '<shop name>'
 ```
 
-
-Accessing the GraphQL API
--------------------------
+## Accessing the GraphQL API
 
 First set up the base URL and headers, using the variables above.
 
 ```powershell
 $uri = "https://$shopName.myshopify.com/admin/api/2021-01/graphql.json"
-$headers = @{ 
+$headers = @{
   'Content-Type' = 'application/graphql';
   'X-Shopify-Access-Token' = $password
 }
 ```
 
-A simple query can be used to check the existing shipping profiles.
+A simple query can be used to retrieve data:
 
 ```powershell
 $body = '{
@@ -59,12 +59,40 @@ $body = '{
 Invoke-RestMethod -Method Post -Uri $uri -Headers $headers -Body $body | ConvertTo-Json -Depth 5
 ```
 
-You can also interactively test out queries in the Shopify API developer documentation site: 
+Parametised queries use `application/json` instead of raw `application/graphql`, with the query passed as a string
+parameter.
+
+```powershell
+$jsonHeaders = @{
+  'Content-Type' = 'application/json';
+  'X-Shopify-Access-Token' = $password
+}
+
+$getDeliveryProfileQuery = 'query($id: ID!)
+{
+  deliveryProfile (id: $id) {
+    profileLocationGroups {
+      ... // Rest of query
+    }
+  }
+}'
+
+$getDeliveryProfileData = @{
+  query = $getDeliveryProfileQuery;
+  variables = @{
+    id = $defaultProfileId;
+  }
+}
+
+$defaultProfileDetails = Invoke-RestMethod -Method Post -Uri $uri -Headers $jsonHeaders -Body (ConvertTo-Json -Depth 3 $getDeliveryProfileData)
+$defaultProfileDetails | ConvertTo-Json -Depth 15
+
+```
+
+You can also interactively test out queries in the Shopify API developer documentation site:
 https://shopify.dev/docs/admin-api/graphql/reference/shipping-and-fulfillment/deliveryprofile#samples
 
-
-Get existing shipping profile information
------------------------------------------
+## Get existing shipping profile information
 
 You will need to get the delivery profile ID's and location group ID's to use in other queries.
 
@@ -92,16 +120,16 @@ $defaultProfileId
 ```
 
 Parametised queries use `application/json` instead of raw `application/graphql`, with the query passed as a string
-parameter. 
+parameter.
 
-You can view the content of a profile, for the zone definitions with the countries in that zone and the list of 
+You can view the content of a profile, for the zone definitions with the countries in that zone and the list of
 delivery methods and prices (for different methods or conditions).
 
 Use this to examine your current profiles, or to check the contents after you have created a new profile for
 Australia Post.
 
 ```powershell
-$jsonHeaders = @{ 
+$jsonHeaders = @{
   'Content-Type' = 'application/json';
   'X-Shopify-Access-Token' = $password
 }
@@ -208,9 +236,7 @@ This can then be saved to a comma separated value (CSV) file, e.g. for manipulat
 $zoneData | Export-Csv 'data/zone-country-province.csv'
 ```
 
-
-Generating rate data files
---------------------------
+## Generating rate data files
 
 ### Load Australia Post data to a shipping profile
 
@@ -219,7 +245,7 @@ Create a new profile named 'Australia Post' to load the data into.
 Use the data files to create zones and assign countries to them, then load the shipping rates for the
 zones.
 
-The Shopify API reference for delivery profile updates is: 
+The Shopify API reference for delivery profile updates is:
 https://shopify.dev/docs/admin-api/graphql/reference/shipping-and-fulfillment/deliveryprofileupdate
 
 ### Select the profile to update
@@ -398,7 +424,7 @@ $zoneRateData | ForEach-Object {
   if ([decimal]$line.greaterThanKg) {
     $i = $weightConditionsInput.Add(@{ criteria = @{ unit = 'GRAMS'; value = [decimal]$line.greaterThanKg * 1000; }; operator = 'GREATER_THAN_OR_EQUAL_TO' })
   }
-  $methodInput = @{ 
+  $methodInput = @{
     active = $true;
     name = $line.method;
     rateDefinition = @{ price = @{ amount = [decimal]$line.rateAud; currencyCode = 'AUD' } };
@@ -557,7 +583,6 @@ $updateRatesResult = Invoke-RestMethod -Method Post -Uri $uri -Headers $jsonHead
 $updateRatesResult
 ```
 
-
 ### Replacing the entire existing zones (not just rates, but the zone definitions)
 
 Get details of the existing profile you want to replace:
@@ -597,9 +622,7 @@ $deleteZonesResult = Invoke-RestMethod -Method Post -Uri $uri -Headers $jsonHead
 $deleteZonesResult
 ```
 
-
-Assigning products to profiles
--------------------------------
+## Assigning products to profiles
 
 Get a list of all products you want to assign, e.g. from one vendor.
 
@@ -721,9 +744,7 @@ $addResult2 = Invoke-RestMethod -Method Post -Uri $uri -Headers $jsonHeaders -Bo
 $addResult2.data.deliveryProfileUpdate.profile
 ```
 
-
-Multiple profiles
------------------
+## Multiple profiles
 
 To update the rates in a second profile.
 
@@ -821,7 +842,7 @@ $zoneRateData2 | ForEach-Object {
   if ([decimal]$line.greaterThanKg) {
     $i = $weightConditionsInput.Add(@{ criteria = @{ unit = 'GRAMS'; value = [decimal]$line.greaterThanKg * 1000; }; operator = 'GREATER_THAN_OR_EQUAL_TO' })
   }
-  $methodInput = @{ 
+  $methodInput = @{
     active = $true;
     name = $line.method;
     rateDefinition = @{ price = @{ amount = [decimal]$line.rateAud; currencyCode = 'AUD' } };
@@ -911,5 +932,3 @@ $updateRatesResult
 ```
 
 Check the rates have updated in the UI.
-
-

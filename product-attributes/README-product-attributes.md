@@ -339,16 +339,38 @@ $getProductsQuery = 'query ($first: Int, $filter: String, $after: String) {
 }'
 ```
 
+Also prep the update query:
+
+```powershell
+$setAgeGroupQuery = 'mutation($metafields: [MetafieldsSetInput!]!) {
+  metafieldsSet(metafields: $metafields) {
+    metafields {
+      namespace
+      key
+      jsonValue
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}'
+
+$ageGroupValue = ConvertTo-Json -InputObject @('gid://shopify/Metaobject/614402326679') -Compress
+```
+
+### Update one batch at a time
+
 We want to operate on one page at a time, so select a page of data:
 
 ```powershell
-$endCursor = $null
+$endCursor = $null # Skip this for subsequent batches
 
 $getProductsData = @{
   query = $getProductsQuery;
   variables = @{
     first = 5;
-    filter = "steampunk";
+    filter = "steampunk and status:ACTIVE";
     after = $endCursor;
   }
 }
@@ -366,6 +388,31 @@ $productsWithoutAgeGroup = $products.data.products.nodes | Where-Object {
         $_.namespace -eq 'shopify' -and $_.key -eq 'age-group'
     }).Count -eq 0
 }
+$productsWithoutAgeGroup | Measure-Object | Select Count
+```
+
+Set the `shopify.age-group` metafield on those products. The value for this list metafield must be a JSON array, and `metafieldsSet` accepts up to 25 metafields per request:
+
+```powershell
+$metafieldsToSet = @($productsWithoutAgeGroup | ForEach-Object {
+  @{
+    ownerId = $_.id;
+    namespace = 'shopify';
+    key = 'age-group';
+    type = 'list.metaobject_reference';
+    value = $ageGroupValue
+  }
+})
+
+$setAgeGroupData = @{
+  query = $setAgeGroupQuery;
+  variables = @{
+    metafields = $metafieldsToSet
+  }
+}
+
+$setAgeGroupResult = Invoke-RestMethod -Method Post -Uri $uri -Headers $jsonHeaders -Body (ConvertTo-Json -Depth 5 $setAgeGroupData)
+$setAgeGroupResult.errors
 ```
 
 ## Ideas

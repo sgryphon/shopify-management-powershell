@@ -18,7 +18,9 @@ You will need to have PowerShell Core (crossplatform) installed to run the scrip
 
 ## Configure a Private App to get access to the API
 
-In the Shopfiy admin, go to Apps > Manage private apps.
+In the Shopfiy admin, go to Settings > Apps > Develop apps.
+
+**Can no longer create private apps; need to use Dev Dashboard**
 
 You will need to enable private apps, and then create a new app (call it something like "AusPost Rates" or "Data Manager", or whatever name makes sense to you). It will need Read and write permission to Shipping, as well as other functions you want to use, e.g. to use scripts to add products to shipping, you need Read access to Products.
 

@@ -430,7 +430,8 @@ $setAgeGroupResult.errors
 
 ### Update products with a script
 
-[Set-ProductAgeGroup.ps1](Set-ProductAgeGroup.ps1) updates one page of 'shopify.age-group' values where missing.
+[Set-ProductAgeGroup.ps1](Set-ProductAgeGroup.ps1) updates one page of 'shopify.age-group' values where missing,
+only for products whose assigned category supports the metafield. Products without a category are skipped.
 
 Required parameters:
 
@@ -442,12 +443,24 @@ Optional:
 
 - `-BatchSize`: Number of products to retrieve; default 25.
 - `-Filter`: Shopify product search; defaults to 'status:ACTIVE'
+- `-CategoryResults`: Hashtable of category IDs and boolean applicability results; defaults to an empty cache.
+
+Category applicability is checked only after finding a missing age group, once per unknown category.
+Both supported and unsupported categories are cached. Verbose output for each new result includes
+the category full name, ID, and `$true` or `$false`. Use those results to seed the cache for future runs:
+
+```powershell
+$categoryResults = @{
+  # 'gid://shopify/TaxonomyCategory/<category ID>' = $true
+  # 'gid://shopify/TaxonomyCategory/<another category ID>' = $false
+}
+```
 
 To run one batch:
 
 ```powershell
 $VerbosePreference = 'Continue'
-$result = .\Set-ProductAgeGroup.ps1 -Uri $uri -JsonHeaders $jsonHeaders
+$result = .\Set-ProductAgeGroup.ps1 -Uri $uri -JsonHeaders $jsonHeaders -CategoryResults $categoryResults
 $result
 ```
 
@@ -457,7 +470,7 @@ To process all pages:
 $VerbosePreference = 'Continue'
 $result = $null
 do {
-  $result = .\Set-ProductAgeGroup.ps1 -Uri $uri -JsonHeaders $jsonHeaders -AfterCursor $result.NextAfterCursor
+  $result = .\Set-ProductAgeGroup.ps1 -Uri $uri -JsonHeaders $jsonHeaders -AfterCursor $result.NextAfterCursor -CategoryResults $categoryResults
 } while ($result.nextAfterCursor)
 ```
 

@@ -46,6 +46,8 @@ param (
     'gid://shopify/TaxonomyCategory/aa-6-8' = $true # Necklaces
     'gid://shopify/TaxonomyCategory/ae-2-1-2-8-4' = $false
     'gid://shopify/TaxonomyCategory/ae-3-1-6' = $false
+    'gid://shopify/TaxonomyCategory/gc' = $false
+    'gid://shopify/TaxonomyCategory/archived-274' = $false
   }
 )
 

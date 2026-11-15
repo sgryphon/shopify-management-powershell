@@ -470,7 +470,7 @@ To process all pages:
 $VerbosePreference = 'Continue'
 $result = $null
 do {
-  $result = .\Set-ProductAgeGroup.ps1 -Uri $uri -JsonHeaders $jsonHeaders -AfterCursor $result.NextAfterCursor -CategoryResults $categoryResults
+  $result = .\Set-ProductAgeGroup.ps1 -Uri $uri -JsonHeaders $jsonHeaders -AfterCursor $result.NextAfterCursor
 } while ($result.nextAfterCursor)
 ```
 

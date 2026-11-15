@@ -168,6 +168,19 @@ SKU search is a starts-with, e.g. the following is just the wholesale product, b
 }
 ```
 
+### Invalid filters
+
+Although you can filter on properties like metafields, not all metafields are valid.
+
+Some get errors like "definition-not-admin-filterable".
+
+```json
+{
+  "first": 100,
+  "filter": "steampunk and status:ACTIVE and metafields.shopify.age-group:*"
+}
+```
+
 ## Query of relevant attributes
 
 ```powershell
@@ -413,6 +426,39 @@ $setAgeGroupData = @{
 
 $setAgeGroupResult = Invoke-RestMethod -Method Post -Uri $uri -Headers $jsonHeaders -Body (ConvertTo-Json -Depth 5 $setAgeGroupData)
 $setAgeGroupResult.errors
+```
+
+### Update products with a script
+
+[Set-ProductAgeGroup.ps1](Set-ProductAgeGroup.ps1) updates one page of 'shopify.age-group' values where missing.
+
+Required parameters:
+
+- `-Uri`: Shopify GraphQL Admin API endpoint.
+- `-JsonHeaders`: JSON content type and Shopify access token headers.
+- `-AfterCursor`: Pass the previous end cursor for the next page.
+
+Optional:
+
+- `-BatchSize`: Number of products to retrieve; default 25.
+- `-Filter`: Shopify product search; defaults to 'status:ACTIVE'
+
+To run one batch:
+
+```powershell
+$VerbosePreference = 'Continue'
+$result = .\Set-ProductAgeGroup.ps1 -Uri $uri -JsonHeaders $jsonHeaders
+$result
+```
+
+To process all pages:
+
+```powershell
+$VerbosePreference = 'Continue'
+$result = $null
+do {
+  $result = .\Set-ProductAgeGroup.ps1 -Uri $uri -JsonHeaders $jsonHeaders -AfterCursor $result.NextAfterCursor
+} while ($result.nextAfterCursor)
 ```
 
 ## Ideas
